@@ -110,10 +110,12 @@ function solar.draw()
 			end
 		end
 
-		-- -- Pretty quotations --
-		-- if func == "true" or func == "false" then -- and type(func) == "string" then
-		-- 	func = '"' .. func .. '"'
-		-- end
+		-- Pretty quotations --
+		if func ~= "true" and func ~= "false" then
+			if type(func) == "string" then
+				func = '"' .. func .. '"'
+			end
+		end
 
 		love.graphics.print(func, theme.font:getWidth(name) + solar.x + 12, (solar.y + 4) + (theme.font:getHeight() * (i - 1)))
 
