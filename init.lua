@@ -44,8 +44,6 @@ solar.height = 34
 
 local theme = require(path .. '/themes/' .. theme)
 
-local solarfont = love.graphics.newFont(16)
-
 function solar.addVar(name, variable)
 
 	assert(type(variable) == "function", "variable must be in function form")
@@ -78,8 +76,8 @@ function solar.draw()
 
 		local lengthstring = tostring(solar.namelist[i] .. ": " .. solar.functionlist[i]())
 
-		if solarfont:getWidth(lengthstring) > highestwidth then
-			highestwidth = solarfont:getWidth(lengthstring)
+		if theme.font:getWidth(lengthstring) > highestwidth then
+			highestwidth = theme.font:getWidth(lengthstring)
 		end
 
 	end
@@ -87,7 +85,7 @@ function solar.draw()
 	solar.width = 15 + highestwidth
 
 	love.graphics.setColor(theme.panelbg)
-	love.graphics.rectangle( "fill", solar.x, solar.y, solar.width, solar.height + ((#solar.namelist - 1.3) * 20))
+	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, (theme.font:getHeight() * (#solar.namelist) + #solar.namelist))
 	love.graphics.setColor(255,255,255,255)
 
 	for i=1, #solar.namelist do
@@ -95,9 +93,9 @@ function solar.draw()
 		local name = solar.namelist[i]
 		local func = solar.functionlist[i]()
 
-		love.graphics.setFont(solarfont)
+		love.graphics.setFont(theme.font)
 
-		love.graphics.print(name .. ":", solar.x + 4, (solar.y + 4) + (20 * (i - 1)))
+		love.graphics.print(name .. ":", solar.x + 4, (solar.y + 4) + (theme.font:getHeight() * (i - 1)))
 
 		-- Variable highlighting --
 		if enableTheme then
@@ -117,7 +115,7 @@ function solar.draw()
 		-- 	func = '"' .. func .. '"'
 		-- end
 
-		love.graphics.print(func, solarfont:getWidth(name) + solar.x + 12, (solar.y + 4) + (20 * (i - 1)))
+		love.graphics.print(func, theme.font:getWidth(name) + solar.x + 12, (solar.y + 4) + (theme.font:getHeight() * (i - 1)))
 
 		love.graphics.setColor(255,255,255)
 
