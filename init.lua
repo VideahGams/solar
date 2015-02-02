@@ -66,9 +66,24 @@ function solar.removeVar(name)
 
 end
 
+function solar.addWheel(name, variable)
+
+	assert(type(variable) == "function", "variable must be in function form")
+
+	local tbl = {name = name, func = variable, format = "wheel"}
+
+	table.insert(solar.list, tbl)
+
+end
+
 function solar.draw()
 
 	local highestwidth = 0
+
+	local numberofvars = 0
+	local numberofwheels = 0
+
+	-- Resize panel to biggest var width. --
 
 	for i=1, #solar.list do
 
@@ -82,42 +97,74 @@ function solar.draw()
 
 	solar.width = 15 + highestwidth
 
+	-- Find how many types of objects --
+
+	for i=1, #solar.list do
+		if solar.list[i].format == "var" then
+			numberofvars = numberofvars + 1
+		elseif solar.list[i].format == "wheel" then
+			numberofwheels = numberofwheels + 1
+		end
+	end
+
+	local panelheight = 0
+
+	panelheight = theme.font:getHeight() * (numberofvars)
+	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + 100 * numberofwheels
+
 	love.graphics.setColor(theme.panelbg)
-	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, (theme.font:getHeight() * (#solar.list) + #solar.list))
+	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
 	love.graphics.setColor(255,255,255,255)
+
+	local objectheight = (solar.y + 4) - theme.font:getHeight()
 
 	for i=1, #solar.list do
 
 		local name = solar.list[i].name
 		local func = solar.list[i].func()
+		local format = solar.list[i].format
 
-		love.graphics.setFont(theme.font)
+		if format == "var" then
 
-		love.graphics.print(name .. ":", solar.x + 4, (solar.y + 4) + (theme.font:getHeight() * (i - 1)))
+			objectheight = objectheight + theme.font:getHeight()
 
-		-- Variable highlighting --
-		if enableTheme then
-			if func == "true" then
-				love.graphics.setColor(theme.boolean_true)
-			elseif func == "false" then
-				love.graphics.setColor(theme.boolean_false)
-			elseif type(func) == "string" then
-				love.graphics.setColor(theme.string)
-			elseif type(func) == "number" then
-				love.graphics.setColor(theme.number)
+			love.graphics.setFont(theme.font)
+
+			love.graphics.print(name .. ":", solar.x + 4, objectheight)
+
+			-- Variable highlighting --
+			if enableTheme then
+				if func == "true" then
+					love.graphics.setColor(theme.boolean_true)
+				elseif func == "false" then
+					love.graphics.setColor(theme.boolean_false)
+				elseif type(func) == "string" then
+					love.graphics.setColor(theme.string)
+				elseif type(func) == "number" then
+					love.graphics.setColor(theme.number)
+				end
 			end
-		end
 
-		-- Pretty quotations --
-		if func ~= "true" and func ~= "false" then
-			if type(func) == "string" then
-				func = '"' .. func .. '"'
+			-- Pretty quotations --
+			if func ~= "true" and func ~= "false" then
+				if type(func) == "string" then
+					func = '"' .. func .. '"'
+				end
 			end
+
+			love.graphics.print(func, theme.font:getWidth(name) + solar.x + 12, objectheight)
+
+			love.graphics.setColor(255,255,255)
+
+		elseif format == "wheel" then
+
+			objectheight = objectheight + theme.font:getHeight()
+
+			love.graphics.print(func, solar.x + 4, objectheight)
+
+			objectheight = objectheight + 100
+
 		end
-
-		love.graphics.print(func, theme.font:getWidth(name) + solar.x + 12, (solar.y + 4) + (theme.font:getHeight() * (i - 1)))
-
-		love.graphics.setColor(255,255,255)
 
 	end
 
