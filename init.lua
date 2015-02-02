@@ -110,7 +110,7 @@ function solar.draw()
 	local panelheight = 0
 
 	panelheight = theme.font:getHeight() * (numberofvars)
-	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + 100 * numberofwheels
+	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
 
 	love.graphics.setColor(theme.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
@@ -160,9 +160,13 @@ function solar.draw()
 
 			objectheight = objectheight + theme.font:getHeight()
 
-			love.graphics.print(func, solar.x + 4, objectheight)
+			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
-			objectheight = objectheight + 100
+			objectheight = objectheight + theme.font:getHeight()
+
+			love.graphics.circle("line", (solar.x + 4) + 35, objectheight + 35, 35, 20 )
+
+			objectheight = (objectheight + 50)
 
 		end
 
