@@ -34,8 +34,7 @@ local theme = 'monokai'
 local path = ...
 
 local solar = {}
-solar.namelist = {}
-solar.functionlist = {}
+solar.list = {}
 
 solar.x = 15
 solar.y = 15
@@ -48,19 +47,18 @@ function solar.addVar(name, variable)
 
 	assert(type(variable) == "function", "variable must be in function form")
 
-	table.insert(solar.namelist, name)
+	local tbl = {name = name, func = variable, format = "var"}
 
-	table.insert(solar.functionlist, variable)
+	table.insert(solar.list, tbl)
 
 end
 
 function solar.removeVar(name)
 
-	for i=1, #solar.namelist do
+	for i=1, #solar.list do
 
-		if solar.namelist[i] == name then
-			table.remove(solar.namelist, i)
-			table.remove(solar.functionlist, i)
+		if solar.list[i].name == name then
+			table.remove(solar.list, i)
 			break
 		end
 
@@ -72,9 +70,9 @@ function solar.draw()
 
 	local highestwidth = 0
 
-	for i=1, #solar.namelist do
+	for i=1, #solar.list do
 
-		local lengthstring = tostring(solar.namelist[i] .. ": " .. solar.functionlist[i]())
+		local lengthstring = tostring(solar.list[i].name .. ": " .. solar.list[i].func())
 
 		if theme.font:getWidth(lengthstring) > highestwidth then
 			highestwidth = theme.font:getWidth(lengthstring)
@@ -85,13 +83,13 @@ function solar.draw()
 	solar.width = 15 + highestwidth
 
 	love.graphics.setColor(theme.panelbg)
-	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, (theme.font:getHeight() * (#solar.namelist) + #solar.namelist))
+	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, (theme.font:getHeight() * (#solar.list) + #solar.list))
 	love.graphics.setColor(255,255,255,255)
 
-	for i=1, #solar.namelist do
+	for i=1, #solar.list do
 
-		local name = solar.namelist[i]
-		local func = solar.functionlist[i]()
+		local name = solar.list[i].name
+		local func = solar.list[i].func()
 
 		love.graphics.setFont(theme.font)
 
