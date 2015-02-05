@@ -53,7 +53,27 @@ function solar.addVar(name, variable)
 
 end
 
-function solar.removeVar(name)
+function solar.addWheel(name, variable)
+
+	assert(type(variable) == "function", "variable must be in function form")
+
+	local tbl = {name = name, func = variable, format = "wheel"}
+
+	table.insert(solar.list, tbl)
+
+end
+
+function solar.addBar(name, variable)
+
+	assert(type(variable) == "function", "variable must be in function form")
+
+	local tbl = {name = name, func = variable, format = "bar"}
+
+	table.insert(solar.list, tbl)
+
+end
+
+function solar.remove(name)
 
 	for i=1, #solar.list do
 
@@ -66,22 +86,13 @@ function solar.removeVar(name)
 
 end
 
-function solar.addWheel(name, variable)
-
-	assert(type(variable) == "function", "variable must be in function form")
-
-	local tbl = {name = name, func = variable, format = "wheel"}
-
-	table.insert(solar.list, tbl)
-
-end
-
 function solar.draw()
 
 	local highestwidth = 0
 
 	local numberofvars = 0
 	local numberofwheels = 0
+	local numberofbars = 0
 
 	-- Resize panel to biggest var width. --
 
@@ -104,6 +115,8 @@ function solar.draw()
 			numberofvars = numberofvars + 1
 		elseif solar.list[i].format == "wheel" then
 			numberofwheels = numberofwheels + 1
+		elseif solar.list[i].format == "bar" then
+			numberofbars = numberofbars + 1
 		end
 	end
 
@@ -111,6 +124,7 @@ function solar.draw()
 
 	panelheight = theme.font:getHeight() * (numberofvars)
 	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
+	panelheight = panelheight + (theme.font:getHeight() * (numberofbars))
 
 	love.graphics.setColor(theme.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
@@ -167,6 +181,12 @@ function solar.draw()
 			love.graphics.circle("line", (solar.x + 4) + 35, objectheight + 35, 35, 20 )
 
 			objectheight = (objectheight + 50)
+
+		elseif format == "bar" then
+
+			objectheight = objectheight + theme.font:getHeight()
+
+			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
 		end
 
