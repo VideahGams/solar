@@ -63,11 +63,11 @@ function solar.addWheel(name, variable)
 
 end
 
-function solar.addBar(name, variable)
+function solar.addBar(name, variable, min, max, width)
 
 	assert(type(variable) == "function", "variable must be in function form")
 
-	local tbl = {name = name, func = variable, format = "bar"}
+	local tbl = {name = name, func = variable, format = "bar", min = min or 0, max = max or 100, width = width or solar.width}
 
 	table.insert(solar.list, tbl)
 
@@ -124,7 +124,7 @@ function solar.draw()
 
 	panelheight = theme.font:getHeight() * (numberofvars)
 	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
-	panelheight = panelheight + (theme.font:getHeight() * (numberofbars))
+	panelheight = panelheight + (theme.font:getHeight() * (numberofbars)) + (24 * numberofbars)
 
 	love.graphics.setColor(theme.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
@@ -178,15 +178,35 @@ function solar.draw()
 
 			objectheight = objectheight + theme.font:getHeight()
 
-			love.graphics.circle("line", (solar.x + 4) + 35, objectheight + 35, 35, 20 )
+			love.graphics.circle("line", (solar.x + 4) + 35, objectheight + 35, 35, 20)
 
-			objectheight = (objectheight + 50)
+			objectheight = objectheight + 50
 
 		elseif format == "bar" then
+
+			local barwidth = 0
 
 			objectheight = objectheight + theme.font:getHeight()
 
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
+
+			objectheight = objectheight + theme.font:getHeight()
+
+			if solar.width < solar.list[i].width then
+				barwidth = solar.width
+			else
+				barwidth = solar.list[i].width
+			end
+
+			local valuewidth = 0
+
+			valuewidth = func / solar.list[i].max
+
+			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, 20)
+
+			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, 20)
+
+			objectheight = objectheight + 4
 
 		end
 
