@@ -63,11 +63,11 @@ function solar.addWheel(name, variable)
 
 end
 
-function solar.addBar(name, variable, min, max, width)
+function solar.addBar(name, variable, min, max, width, color)
 
 	assert(type(variable) == "function", "variable must be in function form")
 
-	local tbl = {name = name, func = variable, format = "bar", min = min or 0, max = max or 100, width = width or solar.width}
+	local tbl = {name = name, func = variable, format = "bar", min = min or 0, max = max or 100, width = width or solar.width, color = color or {255, 255, 255, 255}}
 
 	table.insert(solar.list, tbl)
 
@@ -202,9 +202,13 @@ function solar.draw()
 
 			valuewidth = func / solar.list[i].max
 
+			love.graphics.setColor(solar.list[i].color)
+
 			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, 20)
 
 			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, 20)
+
+			love.graphics.setColor(255, 255, 255, 255)
 
 			objectheight = objectheight + 4
 
