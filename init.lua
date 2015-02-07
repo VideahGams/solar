@@ -45,6 +45,11 @@ local theme = require(path .. '/themes/' .. theme)
 
 function solar.addVar(name, variable)
 
+	local value = variable()
+	if value == true or value == false then
+		variable = function() return tostring(value) end
+	end
+
 	assert(type(variable) == "function", "variable must be in function form")
 
 	local tbl = {name = name, func = variable, format = "var"}
