@@ -174,6 +174,8 @@ function solar.draw()
 
 			objectheight = objectheight + theme.font:getHeight()
 
+			love.graphics.setFont(theme.font)
+
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
 			objectheight = objectheight + theme.font:getHeight()
@@ -187,6 +189,8 @@ function solar.draw()
 			local barwidth = 0
 
 			objectheight = objectheight + theme.font:getHeight()
+
+			love.graphics.setFont(theme.font)
 
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
