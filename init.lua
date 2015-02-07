@@ -88,6 +88,8 @@ end
 
 function solar.draw()
 
+	if #solar.list == 0 then return end
+
 	local highestwidth = 0
 
 	local numberofvars = 0
