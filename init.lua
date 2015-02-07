@@ -88,15 +88,15 @@ end
 
 function solar.draw()
 
-	if #solar.list == 0 then return end
+	if #solar.list == 0 then return end -- If theres nothing in the list, don't draw anything.
 
 	local highestwidth = 0
-
 	local numberofvars = 0
 	local numberofwheels = 0
 	local numberofbars = 0
 
-	-- Resize panel to biggest var width. --
+	-- Resize panel to biggest object width. --
+	-- TODO: Add Wheels to the logic. --
 
 	for i=1, #solar.list do
 
@@ -132,15 +132,21 @@ function solar.draw()
 
 	local panelheight = 0
 
+	-- Set the panel height depending on object height. --
+
 	panelheight = theme.font:getHeight() * (numberofvars)
 	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
 	panelheight = panelheight + (theme.font:getHeight() * (numberofbars)) + (24 * numberofbars)
+
+	-- Draw the panel background. --
 
 	love.graphics.setColor(theme.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
 	love.graphics.setColor(255,255,255,255)
 
 	local objectheight = (solar.y + 4) - theme.font:getHeight()
+
+	-- Draw the objects. --
 
 	for i=1, #solar.list do
 
@@ -198,6 +204,8 @@ function solar.draw()
 
 			local barwidth = 0
 
+			-- Print the name. --
+
 			objectheight = objectheight + theme.font:getHeight()
 
 			love.graphics.setFont(theme.font)
@@ -205,6 +213,9 @@ function solar.draw()
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
 			objectheight = objectheight + theme.font:getHeight()
+
+			-- If the panels width is lower than the bar width, --
+			-- Then resize the bar to the panel. --
 
 			if solar.width < solar.list[i].width then
 				barwidth = solar.width
@@ -216,6 +227,8 @@ function solar.draw()
 
 			valuewidth = (func - solar.list[i].min) / solar.list[i].max
 
+			-- Don't overdraw the bar. --
+
 			if valuewidth < 0 then
 				valuewidth = 0
 			elseif valuewidth > 1 then
@@ -224,11 +237,17 @@ function solar.draw()
 
 			love.graphics.setColor(solar.list[i].color)
 
+			-- Bar to show the value. --
+
 			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, 20)
+
+			-- Bar outline. --
 
 			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, 20)
 
 			love.graphics.setColor(255, 255, 255, 255)
+
+			-- Add a small gap. --
 
 			objectheight = objectheight + 4
 
