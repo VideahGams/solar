@@ -98,12 +98,20 @@ function solar.draw()
 
 	for i=1, #solar.list do
 
-		local lengthstring = tostring(solar.list[i].name .. ": " .. solar.list[i].func())
+		local format = solar.list[i].format
 
-		if theme.font:getWidth(lengthstring) > highestwidth then
-			highestwidth = theme.font:getWidth(lengthstring)
+		if format == "var" then
+			local lengthstring = tostring(solar.list[i].name .. ": " .. solar.list[i].func())
+
+			if theme.font:getWidth(lengthstring) > highestwidth then
+				highestwidth = theme.font:getWidth(lengthstring)
+			end
+
+		elseif format == "bar" then
+			if solar.list[i].width > highestwidth then
+				highestwidth = solar.list[i].width - 16
+			end
 		end
-
 	end
 
 	solar.width = 15 + highestwidth
