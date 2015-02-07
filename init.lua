@@ -200,7 +200,13 @@ function solar.draw()
 
 			local valuewidth = 0
 
-			valuewidth = func / solar.list[i].max
+			valuewidth = (func - solar.list[i].min) / solar.list[i].max
+
+			if valuewidth < 0 then
+				valuewidth = 0
+			elseif valuewidth > 1 then
+				valuewidth = 1
+			end
 
 			love.graphics.setColor(solar.list[i].color)
 
