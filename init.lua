@@ -41,7 +41,7 @@ solar.y = 15
 solar.width = 250
 solar.height = 34
 
-local theme = require(path .. '/themes/' .. theme)
+solar.theme = require(path .. '/themes/' .. theme)
 
 function solar.addVar(name, variable)
 
@@ -119,8 +119,8 @@ function solar.draw()
 		if format == "var" then
 			local lengthstring = tostring(solar.list[i].name .. ": " .. solar.list[i].func())
 
-			if theme.font:getWidth(lengthstring) > highestwidth then
-				highestwidth = theme.font:getWidth(lengthstring)
+			if solar.theme.font:getWidth(lengthstring) > highestwidth then
+				solar.highestwidth = solar.theme.font:getWidth(lengthstring)
 			end
 
 		elseif format == "bar" then
@@ -150,18 +150,18 @@ function solar.draw()
 
 	-- Set the panel height depending on object height. --
 
-	panelheight = theme.font:getHeight() * (numberofvars)
-	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
-	panelheight = panelheight + (theme.font:getHeight() * (numberofbars)) + (24 * numberofbars)
-	panelheight = panelheight + (((theme.divider_gap * 2) + theme.divider_size) * numberofdividers) + 4
+	panelheight = solar.theme.font:getHeight() * (numberofvars)
+	panelheight = panelheight + (solar.theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
+	panelheight = panelheight + (solar.theme.font:getHeight() * (numberofbars)) + (24 * numberofbars)
+	panelheight = panelheight + (((solar.theme.divider_gap * 2) + solar.theme.divider_size) * numberofdividers) + 4
 
 	-- Draw the panel background. --
 
-	love.graphics.setColor(theme.color.panelbg)
+	love.graphics.setColor(solar.theme.color.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
 	love.graphics.setColor(255,255,255,255)
 
-	local objectheight = (solar.y + 4) - theme.font:getHeight()
+	local objectheight = (solar.y + 4) - solar.theme.font:getHeight()
 
 	-- Draw the objects. --
 
@@ -178,22 +178,22 @@ function solar.draw()
 
 		if format == "var" then
 
-			objectheight = objectheight + theme.font:getHeight()
+			objectheight = objectheight + solar.theme.font:getHeight()
 
-			love.graphics.setFont(theme.font)
+			love.graphics.setFont(solar.theme.font)
 
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
 			-- Variable highlighting --
 			if enableTheme then
 				if func == "true" then
-					love.graphics.setColor(theme.color.boolean_true)
+					love.graphics.setColor(solar.theme.color.boolean_true)
 				elseif func == "false" then
-					love.graphics.setColor(theme.color.boolean_false)
+					love.graphics.setColor(solar.theme.color.boolean_false)
 				elseif type(func) == "string" then
-					love.graphics.setColor(theme.color.string)
+					love.graphics.setColor(solar.theme.color.string)
 				elseif type(func) == "number" then
-					love.graphics.setColor(theme.color.number)
+					love.graphics.setColor(solar.theme.color.number)
 				end
 			end
 
@@ -204,19 +204,19 @@ function solar.draw()
 				end
 			end
 
-			love.graphics.print(func, theme.font:getWidth(name) + solar.x + 12, objectheight)
+			love.graphics.print(func, solar.theme.font:getWidth(name) + solar.x + 12, objectheight)
 
 			love.graphics.setColor(255,255,255)
 
 		elseif format == "wheel" then
 
-			objectheight = objectheight + theme.font:getHeight()
+			objectheight = objectheight + solar.theme.font:getHeight()
 
 			love.graphics.setFont(theme.font)
 
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
-			objectheight = objectheight + theme.font:getHeight()
+			objectheight = objectheight + solar.theme.font:getHeight()
 
 			love.graphics.circle("line", (solar.x + 4) + 35, objectheight + 35, 35, 20)
 
@@ -228,13 +228,13 @@ function solar.draw()
 
 			-- Print the name. --
 
-			objectheight = objectheight + theme.font:getHeight()
+			objectheight = objectheight + solar.theme.font:getHeight()
 
-			love.graphics.setFont(theme.font)
+			love.graphics.setFont(solar.theme.font)
 
 			love.graphics.print(name .. ":", solar.x + 4, objectheight)
 
-			objectheight = objectheight + theme.font:getHeight()
+			objectheight = objectheight + solar.theme.font:getHeight()
 
 			-- If the panels width is lower than the bar width, --
 			-- Then resize the bar to the panel. --
@@ -261,19 +261,19 @@ function solar.draw()
 
 			-- Bar to show the value. --
 
-			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, theme.bar_size)
+			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, solar.theme.bar_size)
 
 			-- Bar outline. --
 
-			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, theme.bar_size)
+			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, solar.theme.bar_size)
 
 			love.graphics.setColor(255, 255, 255, 255)
 
 			-- Add bar height. --
 
-			objectheight = objectheight + theme.bar_size
+			objectheight = objectheight + solar.theme.bar_size
 
-			objectheight = objectheight - theme.font:getHeight()
+			objectheight = objectheight - solar.theme.font:getHeight()
 
 			-- Add a small gap. --
 
@@ -281,15 +281,15 @@ function solar.draw()
 
 			elseif format == "divider" then
 
-				objectheight = objectheight + theme.font:getHeight() + theme.divider_gap
+				objectheight = objectheight + solar.theme.font:getHeight() + solar.theme.divider_gap
 
-				love.graphics.setColor(theme.color.divider)
+				love.graphics.setColor(solar.theme.color.divider)
 
-				love.graphics.rectangle("fill", solar.x + 8, objectheight, solar.width - 16, theme.divider_size)
+				love.graphics.rectangle("fill", solar.x + 8, objectheight, solar.width - 16, solar.theme.divider_size)
 
 				love.graphics.setColor(255, 255, 255, 255)
 
-				objectheight = (objectheight - theme.font:getHeight() + theme.divider_gap) + theme.divider_size
+				objectheight = (objectheight - solar.theme.font:getHeight() + solar.theme.divider_gap) + solar.theme.divider_size
 
 		end
 
