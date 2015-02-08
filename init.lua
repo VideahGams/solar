@@ -78,6 +78,14 @@ function solar.addBar(name, variable, min, max, width, color)
 
 end
 
+function solar.addDivider(name)
+
+	local tbl = {name = name or "divider", format = "divider"}
+
+	table.insert(solar.list, tbl)
+
+end
+
 function solar.remove(name)
 
 	for i=1, #solar.list do
@@ -99,6 +107,7 @@ function solar.draw()
 	local numberofvars = 0
 	local numberofwheels = 0
 	local numberofbars = 0
+	local numberofdividers = 0
 
 	-- Resize panel to biggest object width. --
 	-- TODO: Add Wheels to the logic. --
@@ -132,6 +141,8 @@ function solar.draw()
 			numberofwheels = numberofwheels + 1
 		elseif solar.list[i].format == "bar" then
 			numberofbars = numberofbars + 1
+		elseif solar.list[i].format == "divider" then
+			numberofdividers = numberofdividers + 1
 		end
 	end
 
@@ -142,10 +153,11 @@ function solar.draw()
 	panelheight = theme.font:getHeight() * (numberofvars)
 	panelheight = panelheight + (theme.font:getHeight() * (numberofwheels)) + (70 * numberofwheels) + 4
 	panelheight = panelheight + (theme.font:getHeight() * (numberofbars)) + (24 * numberofbars)
+	panelheight = panelheight + (((theme.divider_gap * 2) + theme.divider_size) * numberofdividers) + 4
 
 	-- Draw the panel background. --
 
-	love.graphics.setColor(theme.panelbg)
+	love.graphics.setColor(theme.color.panelbg)
 	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
 	love.graphics.setColor(255,255,255,255)
 
@@ -155,9 +167,14 @@ function solar.draw()
 
 	for i=1, #solar.list do
 
-		local name = solar.list[i].name
-		local func = solar.list[i].func()
 		local format = solar.list[i].format
+		local name = solar.list[i].name
+		local func = nil
+
+
+		if format ~= "divider" then
+			func = solar.list[i].func()
+		end
 
 		if format == "var" then
 
@@ -170,13 +187,13 @@ function solar.draw()
 			-- Variable highlighting --
 			if enableTheme then
 				if func == "true" then
-					love.graphics.setColor(theme.boolean_true)
+					love.graphics.setColor(theme.color.boolean_true)
 				elseif func == "false" then
-					love.graphics.setColor(theme.boolean_false)
+					love.graphics.setColor(theme.color.boolean_false)
 				elseif type(func) == "string" then
-					love.graphics.setColor(theme.string)
+					love.graphics.setColor(theme.color.string)
 				elseif type(func) == "number" then
-					love.graphics.setColor(theme.number)
+					love.graphics.setColor(theme.color.number)
 				end
 			end
 
@@ -244,17 +261,35 @@ function solar.draw()
 
 			-- Bar to show the value. --
 
-			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, 20)
+			love.graphics.rectangle("fill", solar.x + 8, objectheight, (barwidth - 16) * valuewidth, theme.bar_size)
 
 			-- Bar outline. --
 
-			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, 20)
+			love.graphics.rectangle("line", solar.x + 8, objectheight, barwidth - 16, theme.bar_size)
 
 			love.graphics.setColor(255, 255, 255, 255)
+
+			-- Add bar height. --
+
+			objectheight = objectheight + theme.bar_size
+
+			objectheight = objectheight - theme.font:getHeight()
 
 			-- Add a small gap. --
 
 			objectheight = objectheight + 4
+
+			elseif format == "divider" then
+
+				objectheight = objectheight + theme.font:getHeight() + theme.divider_gap
+
+				love.graphics.setColor(theme.color.divider)
+
+				love.graphics.rectangle("fill", solar.x + 8, objectheight, solar.width - 16, theme.divider_size)
+
+				love.graphics.setColor(255, 255, 255, 255)
+
+				objectheight = (objectheight - theme.font:getHeight() + theme.divider_gap) + theme.divider_size
 
 		end
 
