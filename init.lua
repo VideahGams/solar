@@ -124,6 +124,12 @@ function solar.draw()
 
 	end
 
+	local function removePanelHeight(height)
+
+		panelheight = panelheight - height
+
+	end
+
 	local highestwidth = 0
 	local numberofvars = 0
 	local numberofwheels = 0
