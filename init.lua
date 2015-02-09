@@ -186,6 +186,8 @@ function solar.draw()
 
 		if solar.theme.border_enabled then
 
+			love.graphics.setColor(solar.theme.color.border)
+
 			-- Top Bar --
 			love.graphics.rectangle("fill", solar.x - bordersize, solar.y - bordersize, solar.width + bordersize * 2, bordersize)
 
@@ -200,7 +202,9 @@ function solar.draw()
 			-- Bot Bar --
 
 			love.graphics.rectangle("fill", solar.x - bordersize, solar.y + panelheight, solar.width + bordersize * 2, bordersize)
-			
+
+			love.graphics.setColor(255, 255, 255, 255)
+
 		end
 
 	-- Draw the panel background. --
