@@ -180,6 +180,29 @@ function solar.draw()
 	addPanelHeight((solar.theme.font:getHeight() * (numberofbars)) + (24 * numberofbars))
 	addPanelHeight((((solar.theme.divider_gap * 2) + solar.theme.divider_size) * numberofdividers) + 4)
 
+	-- Draw the panel background border. --
+
+	local bordersize = solar.theme.border_size
+
+		if solar.theme.border_enabled then
+
+			-- Top Bar --
+			love.graphics.rectangle("fill", solar.x - bordersize, solar.y - bordersize, solar.width + bordersize * 2, bordersize)
+
+			-- Left Bar --
+
+			love.graphics.rectangle("fill", solar.x - bordersize, solar.y - bordersize, bordersize, panelheight + bordersize * 2)
+
+			-- Right Bar --
+
+			love.graphics.rectangle("fill", solar.x + solar.width, solar.y - bordersize, bordersize, panelheight + bordersize * 2)
+
+			-- Bot Bar --
+
+			love.graphics.rectangle("fill", solar.x - bordersize, solar.y + panelheight, solar.width + bordersize * 2, bordersize)
+			
+		end
+
 	-- Draw the panel background. --
 
 	local bgimage = solar.theme.bg_image
