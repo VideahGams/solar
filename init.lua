@@ -182,9 +182,29 @@ function solar.draw()
 
 	-- Draw the panel background. --
 
-	love.graphics.setColor(solar.theme.color.panelbg)
-	love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
-	love.graphics.setColor(255,255,255,255)
+	local bgimage = solar.theme.bg_image
+	local bgformat = solar.theme.bg_type
+
+	if bgformat == "color" then
+
+		love.graphics.setColor(solar.theme.color.panelbg)
+		love.graphics.rectangle("fill", solar.x, solar.y, solar.width, panelheight)
+		love.graphics.setColor(255,255,255,255)
+
+	elseif bgformat == "image" then
+
+		local scalex = solar.width / bgimage:getWidth()
+		local scaley = panelheight / bgimage:getHeight()
+
+		love.graphics.draw(bgimage, solar.x, solar.y, 0, scalex, scaley)
+
+	elseif bgformat == "tiled-image" then
+
+		bgimage:setWrap('repeat', 'repeat')
+		local bgQuad = love.graphics.newQuad(0, 0, solar.width, panelheight, bgimage:getHeight(), bgimage:getWidth())
+		love.graphics.draw(bgimage, bgQuad, solar.x, solar.y)
+
+	end
 
 	addObjectHeight((solar.y + 4) - solar.theme.font:getHeight())
 

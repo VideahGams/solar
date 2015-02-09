@@ -18,6 +18,9 @@ theme = {
 	font = love.graphics.newFont(16),
 
 	-- Other --
+	bg_type = "color",
+	bg_image = love.graphics.newImage("game/data/images/menubg.png"),
+
 	bar_size = 20,
 
 	divider_gap = 10,
