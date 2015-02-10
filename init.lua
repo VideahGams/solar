@@ -45,11 +45,6 @@ solar.theme = require(path .. '/themes/' .. theme)
 
 function solar.addVar(name, variable)
 
-	local value = variable()
-	if value == true or value == false then
-		variable = function() return tostring(value) end
-	end
-
 	assert(type(variable) == "function", "variable must be in function form")
 
 	local tbl = {name = name, func = variable, format = "var"}
@@ -130,6 +125,8 @@ function solar.draw()
 
 	end
 
+	-- Object Counters --
+
 	local highestwidth = 0
 	local numberofvars = 0
 	local numberofwheels = 0
@@ -142,9 +139,20 @@ function solar.draw()
 	for i=1, #solar.list do
 
 		local format = solar.list[i].format
+		local value = nil
+
+		if format ~= "divider" then
+			value = solar.list[i].func()
+		end
+
+		-- Fix Booleans --
+
+		if value == true or value == false then
+			value = tostring(value)
+		end
 
 		if format == "var" then
-			local lengthstring = tostring(solar.list[i].name .. ": " .. solar.list[i].func())
+			local lengthstring = tostring(solar.list[i].name .. ": " .. value)
 
 			if solar.theme.font:getWidth(lengthstring) > highestwidth then
 				solar.highestwidth = solar.theme.font:getWidth(lengthstring)
@@ -242,9 +250,17 @@ function solar.draw()
 		local format = solar.list[i].format
 		local name = solar.list[i].name
 		local func = nil
+		local value = nil
 
 		if format ~= "divider" then
 			func = solar.list[i].func()
+			value = func
+		end
+
+		-- Fix Booleans --
+
+		if value == true or value == false then
+			value = tostring(func)
 		end
 
 		if format == "var" then
@@ -257,25 +273,23 @@ function solar.draw()
 
 			-- Variable highlighting --
 			if enableTheme then
-				if func == "true" then
+				if value == "true" and type(func) == "boolean" then
 					love.graphics.setColor(solar.theme.color.boolean_true)
-				elseif func == "false" then
+				elseif value == "false" and type(func) == "boolean" then
 					love.graphics.setColor(solar.theme.color.boolean_false)
-				elseif type(func) == "string" then
+				elseif type(value) == "string" then
 					love.graphics.setColor(solar.theme.color.string)
-				elseif type(func) == "number" then
+				elseif type(value) == "number" then
 					love.graphics.setColor(solar.theme.color.number)
 				end
 			end
 
 			-- Pretty quotations --
-			if func ~= "true" and func ~= "false" then
-				if type(func) == "string" then
-					func = '"' .. func .. '"'
-				end
+			if type(func) == "string" then
+				value = '"' .. value .. '"'
 			end
 
-			love.graphics.print(func, solar.theme.font:getWidth(name) + solar.x + 12, objectheight)
+			love.graphics.print(value, solar.theme.font:getWidth(name) + solar.x + 12, objectheight)
 
 			love.graphics.setColor(255,255,255)
 
