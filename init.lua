@@ -155,7 +155,7 @@ function solar.draw()
 			local lengthstring = tostring(solar.list[i].name .. ": " .. value)
 
 			if solar.theme.font:getWidth(lengthstring) > highestwidth then
-				solar.highestwidth = solar.theme.font:getWidth(lengthstring)
+				highestwidth = solar.theme.font:getWidth(lengthstring)
 			end
 
 		elseif format == "bar" then
