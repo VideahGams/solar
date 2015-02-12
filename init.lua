@@ -165,7 +165,7 @@ function solar.draw()
 		end
 	end
 
-	solar.width = 15 + highestwidth
+	solar.width = highestwidth + 8
 
 	-- Find how many types of objects --
 
