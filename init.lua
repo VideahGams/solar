@@ -147,7 +147,7 @@ function solar.draw()
 
 		-- Fix Booleans --
 
-		if value == true or value == false then
+		if value == true or value == false or value == nil then
 			value = tostring(value)
 		end
 
@@ -257,9 +257,9 @@ function solar.draw()
 			value = func
 		end
 
-		-- Fix Booleans --
+		-- Fix Booleans and nil --
 
-		if value == true or value == false then
+		if value == true or value == false or value == nil then
 			value = tostring(func)
 		end
 
@@ -277,6 +277,8 @@ function solar.draw()
 					love.graphics.setColor(solar.theme.color.boolean_true)
 				elseif value == "false" and type(func) == "boolean" then
 					love.graphics.setColor(solar.theme.color.boolean_false)
+				elseif value == "nil" and type(func) == "nil" then
+					love.graphics.setColor(solar.theme.color.null)
 				elseif type(value) == "string" then
 					love.graphics.setColor(solar.theme.color.string)
 				elseif type(value) == "number" then
