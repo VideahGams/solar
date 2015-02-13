@@ -145,6 +145,12 @@ function solar.draw()
 			value = solar.list[i].func()
 		end
 
+		-- Add quotations to the logic --
+
+		if type(value) == "string" and solar.theme.quotations then
+			value = '"' .. value .. '"'
+		end
+
 		-- Fix Booleans --
 
 		if value == true or value == false or value == nil then
@@ -287,7 +293,7 @@ function solar.draw()
 			end
 
 			-- Pretty quotations --
-			if type(func) == "string" then
+			if type(func) == "string" and solar.theme.quotations then
 				value = '"' .. value .. '"'
 			end
 

@@ -29,7 +29,9 @@ theme = {
 	divider_size = 1,
 
 	border_enabled = true,
-	border_size = 2
+	border_size = 2,
+
+	quotations = true
 
 }
 
