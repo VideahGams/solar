@@ -45,9 +45,8 @@ function Solar:initialize(x, y, settings)
 
 	print(string.format("Created debug panel at: X:%s Y:%s", self.x, self.y))
 
-	self:newObject(function() return _G.fps end, "var")
-
-
+	-- self:newObject("Debug Panel", "text", {align = "center"})
+	-- self:newObject("fps", "var")
 
 end
 
@@ -83,6 +82,7 @@ function Solar:draw()
 
 	for i, object in ipairs(self.objects) do
 		object:setPanelPos(self.x, self.y)
+		object:setPanelSize(self.width, self.height)
 		object:setPos(offseth, (object.height * (i - 1)) + (offsetv * i))
 		object:draw()
 	end
@@ -103,6 +103,10 @@ function Solar:newObject(var, obj, settings)
 
 	settings = settings or {}
 	settings.panelx, settings.panely = self.x, self.y
+	settings.panelw, settings.panelh = self.width, self.height
+
+	settings.offseth = self.theme.gap_horizontal
+	settings.offsetv = self.theme.gap_vertical
 
 	-- Defaults --
 	settings.font = settings.font or self.theme.font
