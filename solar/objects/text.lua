@@ -7,7 +7,7 @@ local Text = class("Text", Base)
 
 function Text:initialize(var, settings)
 
-	Base.initialize(self, Text, settings)
+	Base.initialize(self, var, settings)
 
 	self.text = var
 

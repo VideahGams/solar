@@ -62,6 +62,10 @@ function Base:getVar()
 
 		return util.getGlobalFromName(variable)
 
+	else
+
+		return variable
+
 	end
 
 end
