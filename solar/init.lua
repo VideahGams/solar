@@ -45,11 +45,11 @@ function Solar:initialize(x, y, settings)
 
 	print(string.format("Created debug panel at: X:%s Y:%s", self.x, self.y))
 
-	self:newObject("text", "Debug Panel", {align = "center", underline = true})
-	self:newObject("var", "fps", {align = "center"})
-	self:newObject("var", "map.currentmapname", {name = "Current Map", align = "center"})
-	self:newObject("image", love.graphics.newImage("engine/data/images/missing.png"), {scalex = 0.5, scaley = 0.5, align = "right"})
-	self:newObject("bar", "fps", {align = "left", max = 144, color = {255, 0, 0}, name = "Framerate"})
+	-- self:newObject("text", "Debug Panel", {align = "center", underline = true})
+	-- self:newObject("var", "fps", {align = "center"})
+	-- self:newObject("var", "map.currentmapname", {name = "Current Map", align = "center"})
+	-- self:newObject("image", love.graphics.newImage("engine/data/images/missing.png"), {scalex = 0.5, scaley = 0.5, align = "right"})
+	-- self:newObject("bar", "fps", {align = "left", max = 144, color = {255, 0, 0}, name = "Framerate"})
 
 end
 
