@@ -29,11 +29,11 @@ function Text:draw()
 
 	love.graphics.print(self.text, self.x + self.panelx, self.y + self.panely)
 
+	if self.settings.underline then
+		love.graphics.rectangle("fill", self.x + self.panelx, (self.y + self.height) + self.panely, self.width, 1)
+	end
+
 	love.graphics.setColor(255, 255, 255)
-
-end
-
-function Text:update(dt)
 
 end
 
