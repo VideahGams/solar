@@ -15,8 +15,6 @@ function Text:initialize(var, settings)
 	self.width = self.font:getWidth(self.text)
 	self.height = self.font:getHeight()
 
-	print("     Created Text Object")
-
 end
 
 function Text:draw()

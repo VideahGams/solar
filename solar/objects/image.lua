@@ -18,8 +18,6 @@ function Image:initialize(var, settings)
 	self.width = self.image:getWidth()
 	self.height = self.image:getHeight()
 
-	print("     Created Image Object")
-
 end
 
 function Image:draw()

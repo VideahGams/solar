@@ -17,7 +17,6 @@ function Var:initialize(var, settings)
 	self.width = self.font:getWidth("HurpDurp")
 	self.height = self.font:getHeight()
 
-	print("    Created Variable Object")
 end
 
 function Var:draw()

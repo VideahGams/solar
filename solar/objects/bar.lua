@@ -29,8 +29,6 @@ function Bar:initialize(var, settings)
 	self.width = self.settings.width or self.panelw
 	self.height = self.settings.height or 50
 
-	print("     Created Bar Object")
-
 end
 
 function Bar:drawBorder(x, y, width, height, dens, color)
@@ -62,7 +60,7 @@ end
 
 function Bar:draw()
 
-	if self.settings.width == nil then
+	if not self.settings.width then
 		self.width = self.panelw - self.offseth * 2
 	end
 
@@ -93,7 +91,7 @@ function Bar:draw()
 
 	end
 
-	if self.settings.width == nil then
+	if not self.settings.width then
 		self.width = 0
 	end
 
